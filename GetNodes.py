@@ -9,6 +9,8 @@
 from lxml import etree
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import base64
 import datetime
 import time
@@ -97,11 +99,15 @@ web_url = 'https://v2raya.net/free-nodes/free-v2ray-node-subscriptions.html'
 # /html/body/div[2]/main/div[1]/article/div/ul/li[7]/text()[2]
 # https://www.v2raya.net/free-nodes/free-v2ray-node-subscriptions.html
 driver.get(web_url)
+WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.XPATH, "/html/body/div[2]/main/div[1]/article/div/ul/li[13]"))
+)
 html = driver.page_source
 selector = etree.HTML(html)
 for i in range(1, 14):
-    tmp = selector.xpath(f'/html/body/div[2]/main/div[1]/article/div/ul/li[{i}]/text()[2]')[0]
-    tmp = tmp.strip()
+    tmp = selector.xpath(f'/html/body/div[2]/main/div[1]/article/div/ul/li[{i}]/text()[2]')
+    # print(tmp)
+    tmp = tmp[0].strip()
     if tmp != '':
         targets.append(tmp)
 
