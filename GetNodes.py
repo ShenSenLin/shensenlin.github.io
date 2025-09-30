@@ -145,6 +145,8 @@ for op in targets:
     print(j, j / len(targets) * 100)
     j += 1
 
+    CONNECTION_RESET = False
+
     # 使用 selenium 获取订阅链接内容
     try_cnt = 1
     while try_cnt <= TRY_LIM:
@@ -152,12 +154,23 @@ for op in targets:
             driver.get(op)
         except Exception as e:
             print('[ERROR]', e)
+
+            if str(e).find('ERR_CONNECTION_RESET') != -1:
+                CONNECTION_RESET = True
+                break
+
             print('尝试次数：', try_cnt)
             print('重试...')
             time.sleep(1)
         else:
             try_cnt = TRY_LIM + 25
             content = driver.find_element(By.TAG_NAME, "body").text
+
+    if CONNECTION_RESET:
+        print('连接错误：')
+        print(op)
+        print('连接被重置，跳过此链接\n')
+        continue
 
     # 对于未编码内容 - 直接加仓
     if content.find(':') != -1:
