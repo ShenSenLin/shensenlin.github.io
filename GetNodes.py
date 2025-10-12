@@ -43,7 +43,18 @@ print(driver)
 if driver == '1':
     edge_options = webdriver.EdgeOptions()
     edge_options.add_argument('--headless')  # 无头模式
+
+    # 反自动化检测
+    edge_options.add_argument('--disable-blink-features=AutomationControlled')
+    edge_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    edge_options.add_experimental_option('useAutomationExtension', False)
+
+    # 大量的优化
     edge_options.add_argument('--disable-gpu')
+    edge_options.add_argument('--no-sandbox')
+    edge_options.add_argument('--disable-dev-shm-usage')
+    edge_options.add_argument('--disable-infobars')
+    edge_options.add_argument('--disable-notifications')
     edge_options.add_argument('--ignore-certificate-errors')
     edge_options.add_argument('--ignore-ssl-errors')
     driver = webdriver.Edge(options = edge_options)
@@ -57,7 +68,18 @@ elif driver == '2':
 elif driver == '3':
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_argument('--headless')  # 无头模式
+
+    # 反自动化检测
+    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
+
+    # 大量的优化
     chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--disable-dev-shm-usage')
+    chrome_options.add_argument('--disable-infobars')
+    chrome_options.add_argument('--disable-notifications')
     chrome_options.add_argument('--ignore-certificate-errors')
     chrome_options.add_argument('--ignore-ssl-errors')
     driver = webdriver.Chrome(options = chrome_options)
