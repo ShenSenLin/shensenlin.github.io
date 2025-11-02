@@ -29,81 +29,91 @@ headers = {
 }
 targets = []
 
-driver_out = '''
---- 选择浏览器 ---
-[1] - Microsoft Edge
-[2] - Firefox
-[3] - Google Chrome
-'''
+# 代理
+# 默认使用 v2rayn 代理，非v2rayn请自行配置
+enable_proxy = True
+proxy_setting = '--proxy-server=http://127.0.0.1:10808'
 
-# driver = input(driver_out)
+# driver 
 driver = sys.argv[1] if len(sys.argv) > 1 else '3'
 
-print(driver)
-if driver == '1':
-    edge_options = webdriver.EdgeOptions()
-    edge_options.add_argument('--headless')  # 无头模式
-
-    # 反自动化检测
-    edge_options.add_argument('--disable-blink-features=AutomationControlled')
-    edge_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    edge_options.add_experimental_option('useAutomationExtension', False)
-
-    # 大量的优化
-    edge_options.add_argument('--disable-gpu')
-    edge_options.add_argument('--no-sandbox')
-    edge_options.add_argument('--disable-dev-shm-usage')
-    edge_options.add_argument('--disable-infobars')
-    edge_options.add_argument('--disable-notifications')
-    edge_options.add_argument('--ignore-certificate-errors')
-    edge_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Edge(options = edge_options)
-elif driver == '2':
-    firefox_options = webdriver.FirefoxOptions()
-    firefox_options.add_argument('--headless')  # 无头模式
-    firefox_options.add_argument('--disable-gpu')
-    firefox_options.add_argument('--ignore-certificate-errors')
-    firefox_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Firefox(options = firefox_options)
-elif driver == '3':
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')  # 无头模式
-
-    # 反自动化检测
-    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
-
-    # 大量的优化
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('--disable-infobars')
-    chrome_options.add_argument('--disable-notifications')
-    chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Chrome(options = chrome_options)
-else:
-    print('啊？什么意思？')
-    input('按下回车以退出...')
-    sys.exit()
-
-
-# files
+# ???
 input_file = "urls.txt"
 
+# --- Function --- #
+def init_driver():
+    global driver
+    
+    print(driver)
+    if driver == '1':
+        edge_options = webdriver.EdgeOptions()
+        edge_options.add_argument('--headless')  # 无头模式
 
-# -- -- #
+        # 反自动化检测
+        edge_options.add_argument('--disable-blink-features=AutomationControlled')
+        edge_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        edge_options.add_experimental_option('useAutomationExtension', False)
+        
+        # 启用代理
+        if enable_proxy:
+            edge_options.add_argument(proxy_setting)
 
-# Get time
-lt = time.localtime(time.time())
-tz = pytz.timezone("Asia/Shanghai")
-now = datetime.datetime.now(tz)
-formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
-update_time = "## Update Time: " + formatted_time + "\n```\n"
-tm_mon = str(lt.tm_mon) if lt.tm_mon >= 10 else '0'+str(lt.tm_mon)
-tm_mday = str(lt.tm_mday) if lt.tm_mday >= 10 else '0'+str(lt.tm_mday)
+        # 大量的优化
+        edge_options.add_argument('--disable-gpu')
+        edge_options.add_argument('--no-sandbox')
+        edge_options.add_argument('--disable-dev-shm-usage')
+        edge_options.add_argument('--disable-infobars')
+        edge_options.add_argument('--disable-notifications')
+        edge_options.add_argument('--ignore-certificate-errors')
+        edge_options.add_argument('--ignore-ssl-errors')
+        driver = webdriver.Edge(options = edge_options)
+    elif driver == '2':
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.add_argument('--headless')  # 无头模式
+        firefox_options.add_argument('--disable-gpu')
+        firefox_options.add_argument('--ignore-certificate-errors')
+        firefox_options.add_argument('--ignore-ssl-errors')
+        driver = webdriver.Firefox(options = firefox_options)
+    elif driver == '3':
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--headless')  # 无头模式
 
+        # 反自动化检测
+        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option('useAutomationExtension', False)
+
+        # 大量的优化
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-infobars')
+        chrome_options.add_argument('--disable-notifications')
+        chrome_options.add_argument('--ignore-certificate-errors')
+        chrome_options.add_argument('--ignore-ssl-errors')
+        driver = webdriver.Chrome(options = chrome_options)
+    else:
+        print('啊？什么意思？')
+        input('按下回车以退出...')
+        sys.exit()
+
+def init_time():
+    global lt, tm_mon, tm_mday
+    
+    lt = time.localtime(time.time())
+    tz = pytz.timezone("Asia/Shanghai")
+    now = datetime.datetime.now(tz)
+    formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    update_time = "## Update Time: " + formatted_time + "\n```\n"
+    tm_mon = str(lt.tm_mon) if lt.tm_mon >= 10 else '0'+str(lt.tm_mon)
+    tm_mday = str(lt.tm_mday) if lt.tm_mday >= 10 else '0'+str(lt.tm_mday)
+    
+
+# --- main --- #
+
+
+init_driver()
+init_time()
 
 # Get share urls
 print("Get share urls...")
@@ -133,15 +143,23 @@ for i in range(1, 14):
         targets.append(tmp)
 
 print("v2raya.com Finished!")
-    
-for i in targets: print(i)
-# sys.exit(0)
 
 # --- github - shuaidaoya ---#
-web_url = 'https://gist.githubusercontent.com/shuaidaoya/9e5cf2749c0ce79932dd9229d9b4162b/raw/base64.txt
-targets.append('web_url')
+xpath = '/html/body/div[1]/div[6]/div/main/turbo-frame/div/react-app/div/div/div[1]/div/div/div[2]/div/div/div[3]/div[2]/div/div[3]/section/div/div/div[1]/div[1]/textarea/text()'
+wait_xpath = '/html/body/div[1]/div[6]/div/main/turbo-frame/div/react-app/div/div/div[1]/div/div/div[2]/div/div'
+web_url = 'https://github.com/shuaidaoya/FreeNodes/blob/main/nodes/base64.txt'
+driver.get(web_url)
+WebDriverWait(driver, 10).until(
+    EC.presence_of_element_located((By.XPATH, wait_xpath))
+)
+html = driver.page_source
+selector = etree.HTML(html)
+targets.append(selector.xpath(xpath))
+print("Github/shuaidaoya Finished!")
 
-
+# Debug
+for i in targets: print(i)
+# sys.exit(0)
 
 # Get share content
 print("Get share content...")
