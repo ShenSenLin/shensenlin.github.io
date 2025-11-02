@@ -155,15 +155,13 @@ web_url = 'https://raw.githubusercontent.com/ripaojiedian/freenode/main/sub'
 targets.append(web_url)
 print("Github/Ripaojiedian Finished")
 
-# Debug
-for i in targets: print(i)
-# sys.exit(0)
 
 # Get share content
 print("Get share content...")
 urls = ""
 j = 0
 for op in targets:
+    print("url:", op)
     print(j, j / len(targets) * 100)
     j += 1
 
