@@ -1,9 +1,9 @@
 """
 某人的小脚本
-目前支持的网站：
+节点来源：
     1、v2raya.com
     2、clashnode.cc
-这两个基本上就涵盖了网上能找到的绝大多数节点（非github)
+    3、github - shudaoya
 """
 
 from lxml import etree
@@ -106,17 +106,16 @@ tm_mday = str(lt.tm_mday) if lt.tm_mday >= 10 else '0'+str(lt.tm_mday)
 
 
 # Get share urls
-# Supported: clashnode.cc, v2raya.com
 print("Get share urls...")
 
-# 1、freeclashnode.com
+#  ---  freeclashnode.com  ---  #
 # https://node.clashnode.cc/uploads/2025/01/0-20250121.txt
 for i in range(4):
     tmp = 'https://node.clashnode.cc/uploads/{0}/{1}/{3}-{0}{1}{2}.txt'.format(lt.tm_year, tm_mon, tm_mday, i)
     targets.append(tmp)
 print("freeclashnode.com Finished!")
 
-# 2、v2raya.com
+#  ---  v2raya.com  ---  #
 web_url = 'https://v2raya.net/free-nodes/free-v2ray-node-subscriptions.html'
 # /html/body/div[2]/main/div[1]/article/div/ul/li[7]/text()[2]
 # https://www.v2raya.net/free-nodes/free-v2ray-node-subscriptions.html
@@ -138,25 +137,10 @@ print("v2raya.com Finished!")
 for i in targets: print(i)
 # sys.exit(0)
 
-# Input share urls
-'''
-with open(input_file, "r", encoding="utf-8") as f:
-    oglt = f.read()
+# --- github - shuaidaoya ---#
+web_url = 'https://gist.githubusercontent.com/shuaidaoya/9e5cf2749c0ce79932dd9229d9b4162b/raw/base64.txt
+targets.append('web_url')
 
-oglt = oglt.strip()
-flag = False
-target = ''
-for i in range(len(oglt)-1):
-    if oglt[i] == oglt[i+1] == '\n' and not flag:
-        target = target + oglt[i]
-        flag = True
-    elif oglt[i] == '\n' and oglt[i+1] != '\n' and flag:
-        flag = False
-    elif not flag:
-        target += oglt[i]
-
-targets = target.split('\n')
-'''
 
 
 # Get share content
