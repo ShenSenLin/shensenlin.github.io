@@ -3,7 +3,8 @@
 节点来源：
     1、v2raya.com
     2、clashnode.cc
-    3、github - shudaoya
+    3、Github - shudaoya
+    4、Github - ripaojiedian
 """
 
 from lxml import etree
@@ -148,6 +149,11 @@ print("v2raya.com Finished!")
 web_url = 'https://raw.githubusercontent.com/shuaidaoya/FreeNodes/main/nodes/base64.txt'
 targets.append(web_url)
 print("Github/shuaidaoya Finished!")
+
+#  --- Github - Ripaojiedian ---  #
+web_url = 'https://raw.githubusercontent.com/ripaojiedian/freenode/main/sub'
+targets.append(web_url)
+print("Github/Ripaojiedian Finished")
 
 # Debug
 for i in targets: print(i)
