@@ -98,7 +98,7 @@ def init_driver():
         sys.exit()
 
 def init_time():
-    global lt, tm_mon, tm_mday
+    global lt, tm_mon, tm_mday, update_time
     
     lt = time.localtime(time.time())
     tz = pytz.timezone("Asia/Shanghai")
@@ -145,16 +145,8 @@ for i in range(1, 14):
 print("v2raya.com Finished!")
 
 # --- github - shuaidaoya ---#
-xpath = '/html/body/div[1]/div[6]/div/main/turbo-frame/div/react-app/div/div/div[1]/div/div/div[2]/div/div/div[3]/div[2]/div/div[3]/section/div/div/div[1]/div[1]/textarea/text()'
-wait_xpath = '/html/body/div[1]/div[6]/div/main/turbo-frame/div/react-app/div/div/div[1]/div/div/div[2]/div/div'
-web_url = 'https://github.com/shuaidaoya/FreeNodes/blob/main/nodes/base64.txt'
-driver.get(web_url)
-WebDriverWait(driver, 10).until(
-    EC.presence_of_element_located((By.XPATH, wait_xpath))
-)
-html = driver.page_source
-selector = etree.HTML(html)
-targets.append(selector.xpath(xpath))
+web_url = 'https://raw.githubusercontent.com/shuaidaoya/FreeNodes/main/nodes/base64.txt'
+targets.append(web_url)
 print("Github/shuaidaoya Finished!")
 
 # Debug
