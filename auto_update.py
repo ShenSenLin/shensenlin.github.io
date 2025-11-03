@@ -15,4 +15,4 @@ while True:
     os.system('git push')
     cleanscreen()
 
-    time.sleep(21600)
+    time.sleep(7200)
