@@ -123,8 +123,8 @@ print("Get share urls...")
 # https://node.clashnode.cc/uploads/2025/01/0-20250121.txt
 for i in range(4):
     tmp = 'https://node.clashnode.cc/uploads/{0}/{1}/{3}-{0}{1}{2}.txt'.format(lt.tm_year, tm_mon, tm_mday, i)
-    targets.append(tmp)
-print("freeclashnode.com Finished!")
+    # targets.append(tmp)
+print("freeclashnode.com has been banned!")
 
 #  ---  v2raya.com  ---  #
 web_url = 'https://v2raya.net/free-nodes/free-v2ray-node-subscriptions.html'
