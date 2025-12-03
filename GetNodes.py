@@ -1,9 +1,10 @@
 """
 某人的小脚本
-目前支持的网站：
+节点来源：
     1、v2raya.com
     2、clashnode.cc
-这两个基本上就涵盖了网上能找到的绝大多数节点（非github)
+    3、Github - shudaoya
+    4、Github - ripaojiedian
 """
 
 from lxml import etree
@@ -29,94 +30,103 @@ headers = {
 }
 targets = []
 
-driver_out = '''
---- 选择浏览器 ---
-[1] - Microsoft Edge
-[2] - Firefox
-[3] - Google Chrome
-'''
+# 代理
+# 默认使用 v2rayn 代理，非v2rayn请自行配置
+enable_proxy = True
+proxy_setting = '--proxy-server=http://127.0.0.1:10808'
 
-# driver = input(driver_out)
+# driver 
 driver = sys.argv[1] if len(sys.argv) > 1 else '3'
 
-print(driver)
-if driver == '1':
-    edge_options = webdriver.EdgeOptions()
-    edge_options.add_argument('--headless')  # 无头模式
-
-    # 反自动化检测
-    edge_options.add_argument('--disable-blink-features=AutomationControlled')
-    edge_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    edge_options.add_experimental_option('useAutomationExtension', False)
-
-    # 大量的优化
-    edge_options.add_argument('--disable-gpu')
-    edge_options.add_argument('--no-sandbox')
-    edge_options.add_argument('--disable-dev-shm-usage')
-    edge_options.add_argument('--disable-infobars')
-    edge_options.add_argument('--disable-notifications')
-    edge_options.add_argument('--ignore-certificate-errors')
-    edge_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Edge(options = edge_options)
-elif driver == '2':
-    firefox_options = webdriver.FirefoxOptions()
-    firefox_options.add_argument('--headless')  # 无头模式
-    firefox_options.add_argument('--disable-gpu')
-    firefox_options.add_argument('--ignore-certificate-errors')
-    firefox_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Firefox(options = firefox_options)
-elif driver == '3':
-    chrome_options = webdriver.ChromeOptions()
-    chrome_options.add_argument('--headless')  # 无头模式
-
-    # 反自动化检测
-    chrome_options.add_argument('--disable-blink-features=AutomationControlled')
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
-
-    # 大量的优化
-    chrome_options.add_argument('--disable-gpu')
-    chrome_options.add_argument('--no-sandbox')
-    chrome_options.add_argument('--disable-dev-shm-usage')
-    chrome_options.add_argument('--disable-infobars')
-    chrome_options.add_argument('--disable-notifications')
-    chrome_options.add_argument('--ignore-certificate-errors')
-    chrome_options.add_argument('--ignore-ssl-errors')
-    driver = webdriver.Chrome(options = chrome_options)
-else:
-    print('啊？什么意思？')
-    input('按下回车以退出...')
-    sys.exit()
-
-
-# files
+# ???
 input_file = "urls.txt"
 
+# --- Function --- #
+def init_driver():
+    global driver
+    
+    print(driver)
+    if driver == '1':
+        edge_options = webdriver.EdgeOptions()
+        edge_options.add_argument('--headless')  # 无头模式
 
-# -- -- #
+        # 反自动化检测
+        edge_options.add_argument('--disable-blink-features=AutomationControlled')
+        edge_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        edge_options.add_experimental_option('useAutomationExtension', False)
+        
+        # 启用代理
+        if enable_proxy:
+            edge_options.add_argument(proxy_setting)
 
-# Get time
-lt = time.localtime(time.time())
-tz = pytz.timezone("Asia/Shanghai")
-now = datetime.datetime.now(tz)
-formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
-update_time = "## Update Time: " + formatted_time + "\n```\n"
-tm_mon = str(lt.tm_mon) if lt.tm_mon >= 10 else '0'+str(lt.tm_mon)
-tm_mday = str(lt.tm_mday) if lt.tm_mday >= 10 else '0'+str(lt.tm_mday)
+        # 大量的优化
+        edge_options.add_argument('--disable-gpu')
+        edge_options.add_argument('--no-sandbox')
+        edge_options.add_argument('--disable-dev-shm-usage')
+        edge_options.add_argument('--disable-infobars')
+        edge_options.add_argument('--disable-notifications')
+        edge_options.add_argument('--ignore-certificate-errors')
+        edge_options.add_argument('--ignore-ssl-errors')
+        driver = webdriver.Edge(options = edge_options)
+    elif driver == '2':
+        firefox_options = webdriver.FirefoxOptions()
+        firefox_options.add_argument('--headless')  # 无头模式
+        firefox_options.add_argument('--disable-gpu')
+        firefox_options.add_argument('--ignore-certificate-errors')
+        firefox_options.add_argument('--ignore-ssl-errors')
+        driver = webdriver.Firefox(options = firefox_options)
+    elif driver == '3':
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--headless')  # 无头模式
 
+        # 反自动化检测
+        chrome_options.add_argument('--disable-blink-features=AutomationControlled')
+        chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+        chrome_options.add_experimental_option('useAutomationExtension', False)
+
+        # 大量的优化
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
+        chrome_options.add_argument('--disable-infobars')
+        chrome_options.add_argument('--disable-notifications')
+        chrome_options.add_argument('--ignore-certificate-errors')
+        chrome_options.add_argument('--ignore-ssl-errors')
+        driver = webdriver.Chrome(options = chrome_options)
+    else:
+        print('啊？什么意思？')
+        input('按下回车以退出...')
+        sys.exit()
+
+def init_time():
+    global lt, tm_mon, tm_mday, update_time
+    
+    lt = time.localtime(time.time())
+    tz = pytz.timezone("Asia/Shanghai")
+    now = datetime.datetime.now(tz)
+    formatted_time = now.strftime("%Y-%m-%d %H:%M:%S")
+    update_time = "## Update Time: " + formatted_time + "\n```\n"
+    tm_mon = str(lt.tm_mon) if lt.tm_mon >= 10 else '0'+str(lt.tm_mon)
+    tm_mday = str(lt.tm_mday) if lt.tm_mday >= 10 else '0'+str(lt.tm_mday)
+    
+
+# --- main --- #
+
+
+init_driver()
+init_time()
 
 # Get share urls
-# Supported: clashnode.cc, v2raya.com
 print("Get share urls...")
 
-# 1、freeclashnode.com
+#  ---  freeclashnode.com  ---  #
 # https://node.clashnode.cc/uploads/2025/01/0-20250121.txt
-for i in range(1, 5):
+for i in range(4):
     tmp = 'https://node.clashnode.cc/uploads/{0}/{1}/{3}-{0}{1}{2}.txt'.format(lt.tm_year, tm_mon, tm_mday, i)
-    targets.append(tmp)
-print("freeclashnode.com Finished!")
+    # targets.append(tmp)
+print("freeclashnode.com has been banned!")
 
-# 2、v2raya.com
+#  ---  v2raya.com  ---  #
 web_url = 'https://v2raya.net/free-nodes/free-v2ray-node-subscriptions.html'
 # /html/body/div[2]/main/div[1]/article/div/ul/li[7]/text()[2]
 # https://www.v2raya.net/free-nodes/free-v2ray-node-subscriptions.html
@@ -134,29 +144,16 @@ for i in range(1, 14):
         targets.append(tmp)
 
 print("v2raya.com Finished!")
-    
-for i in targets: print(i)
-# sys.exit(0)
 
-# Input share urls
-'''
-with open(input_file, "r", encoding="utf-8") as f:
-    oglt = f.read()
+# --- github - shuaidaoya ---#
+web_url = 'https://raw.githubusercontent.com/shuaidaoya/FreeNodes/main/nodes/base64.txt'
+targets.append(web_url)
+print("Github/shuaidaoya Finished!")
 
-oglt = oglt.strip()
-flag = False
-target = ''
-for i in range(len(oglt)-1):
-    if oglt[i] == oglt[i+1] == '\n' and not flag:
-        target = target + oglt[i]
-        flag = True
-    elif oglt[i] == '\n' and oglt[i+1] != '\n' and flag:
-        flag = False
-    elif not flag:
-        target += oglt[i]
-
-targets = target.split('\n')
-'''
+#  --- Github - Ripaojiedian ---  #
+web_url = 'https://raw.githubusercontent.com/ripaojiedian/freenode/main/sub'
+targets.append(web_url)
+print("Github/Ripaojiedian Finished")
 
 
 # Get share content
@@ -164,6 +161,7 @@ print("Get share content...")
 urls = ""
 j = 0
 for op in targets:
+    print("url:", op)
     print(j, j / len(targets) * 100)
     j += 1
 
