@@ -32,7 +32,7 @@ targets = []
 
 # 代理
 # 默认使用 v2rayn 代理，非v2rayn请自行配置
-enable_proxy = True
+enable_proxy = False
 proxy_setting = '--proxy-server=http://127.0.0.1:10808'
 
 # driver 
@@ -48,7 +48,7 @@ def init_driver():
     print(driver)
     if driver == '1':
         edge_options = webdriver.EdgeOptions()
-        edge_options.add_argument('--headless')  # 无头模式
+        edge_options.add_argument('--headless=new')  # 无头模式
 
         # 反自动化检测
         edge_options.add_argument('--disable-blink-features=AutomationControlled')
@@ -68,7 +68,9 @@ def init_driver():
         edge_options.add_argument('--ignore-certificate-errors')
         edge_options.add_argument('--ignore-ssl-errors')
         edge_options.add_argument('--enable-unsafe-swiftshade')
-        
+        edge_options.add_argument('--disable-ipv6')
+        edge_options.add_argument('--single-process')
+
         # 设置日志
         edge_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         edge_options.add_argument('--log-level=3')  # 只显示致命错误
@@ -85,7 +87,7 @@ def init_driver():
         driver = webdriver.Firefox(options = firefox_options)
     elif driver == '3':
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--headless')  # 无头模式
+        chrome_options.add_argument('--headless=new')  # 无头模式
 
         # 反自动化检测
         chrome_options.add_argument('--disable-blink-features=AutomationControlled')
@@ -101,7 +103,9 @@ def init_driver():
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--ignore-ssl-errors')
         chrome_options.add_argument('--enable-unsafe-swiftshade')
-        
+        chrome_options.add_argument('--disable-ipv6')
+        chrome_options.add_argument('--single-process')
+
         # 设置日志
         chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
         chrome_options.add_argument('--log-level=3')  # 只显示致命错误
