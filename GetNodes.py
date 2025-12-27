@@ -75,6 +75,8 @@ def init_driver():
         
         driver = webdriver.Edge(options = edge_options)
     elif driver == '2':
+        print("[WARN]Firefox has stopped supporting.")
+        
         firefox_options = webdriver.FirefoxOptions()
         firefox_options.add_argument('--headless')  # 无头模式
         firefox_options.add_argument('--disable-gpu')
