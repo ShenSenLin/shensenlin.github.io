@@ -105,6 +105,9 @@ def init_driver():
         chrome_options.add_argument('--enable-unsafe-swiftshade')
         chrome_options.add_argument('--disable-ipv6')
         chrome_options.add_argument('--single-process')
+        chrome_options.add_argument('--no-proxy-server')
+        chrome_options.add_argument('--proxy-bypass-list=*')
+        chrome_options.add_argument('--disable-features=NetworkService')
 
         # 设置日志
         chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
