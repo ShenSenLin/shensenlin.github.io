@@ -67,6 +67,12 @@ def init_driver():
         edge_options.add_argument('--disable-notifications')
         edge_options.add_argument('--ignore-certificate-errors')
         edge_options.add_argument('--ignore-ssl-errors')
+        edge_options.add_argument('--enable-unsafe-swiftshade')
+        
+        # 设置日志
+        edge_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        edge_options.add_argument('--log-level=3')  # 只显示致命错误
+        
         driver = webdriver.Edge(options = edge_options)
     elif driver == '2':
         firefox_options = webdriver.FirefoxOptions()
@@ -92,6 +98,12 @@ def init_driver():
         chrome_options.add_argument('--disable-notifications')
         chrome_options.add_argument('--ignore-certificate-errors')
         chrome_options.add_argument('--ignore-ssl-errors')
+        chrome_options.add_argument('--enable-unsafe-swiftshade')
+        
+        # 设置日志
+        chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+        chrome_options.add_argument('--log-level=3')  # 只显示致命错误
+        
         driver = webdriver.Chrome(options = chrome_options)
     else:
         print('啊？什么意思？')
