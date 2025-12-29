@@ -148,6 +148,7 @@ for i in range(4):
 print("freeclashnode.com has been banned!")
 
 #  ---  v2raya.com  ---  #
+'''
 web_url = 'https://v2raya.net/free-nodes/free-v2ray-node-subscriptions.html'
 # /html/body/div[2]/main/div[1]/article/div/ul/li[7]/text()[2]
 # https://www.v2raya.net/free-nodes/free-v2ray-node-subscriptions.html
@@ -165,6 +166,8 @@ for i in range(1, 14):
         targets.append(tmp)
 
 print("v2raya.com Finished!")
+'''
+print("v2raya.com has been banned")
 
 # --- github - shuaidaoya ---#
 web_url = 'https://raw.githubusercontent.com/shuaidaoya/FreeNodes/main/nodes/base64.txt'
